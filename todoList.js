@@ -82,10 +82,15 @@ function inputEdit(e) {
     }
 }
 
+
 //전체 보기
 allView = () => {
+    const $selected = event.target.closest('a');
+    $selected.classList = 'selected'
+
     document.querySelectorAll('.todo-list > li').forEach((li) => {
         li.classList.remove('hidden');
+        document.querySelectorAll('a')[0].className = 'selected';
     });
     todoCount();
 
@@ -93,6 +98,9 @@ allView = () => {
 
 //안 끝낸 일 보기
 viewActive = () => {
+    const $selected = event.target.closest('a');
+    $selected.classList = 'selected'
+
     document.querySelectorAll('.todo-list > li').forEach((li) => {
         li.classList.remove('hidden');
 
@@ -101,26 +109,38 @@ viewActive = () => {
         }
     });
     todoCount();
-
+    //resetScreen();
 }
 
 //완료 한 일 보기
 completedActive = () => {
+    const $selected = event.target.closest('a');
+    $selected.classList = 'selected'
+
     document.querySelectorAll('.todo-list > li').forEach((li) => {
         li.classList.remove('hidden');
+        console.log(document.querySelectorAll('a').className)
         
         if (li.className === '') {
             li.className = 'hidden';
         }
-      });
-      todoCount();
+    });
+    todoCount();
+    //resetScreen();
 }
 
+
+resetScreen = () => {
+    document.querySelectorAll('a').forEach((a) => a.classList.remove('selected'));
+};
+
 function todoCount() {
-    const count = document.querySelectorAll('.todo-list > li')
-    if (count.className !== 'hidden'){
-     todoLength.innerHTML = count.length;
-    }
+    const countAll = document.querySelectorAll('.todo-list > li').length;
+    const countHidden = document.querySelectorAll('.todo-list > li[class="hidden"]').length;
+    const countCompletedHidden = document.querySelectorAll('.todo-list > li[class="completed hidden"]').length;
+
+    
+    todoLength.innerHTML = countAll - countHidden - countCompletedHidden;
 }
 
 function renderTodoItemTemplate(title) {
